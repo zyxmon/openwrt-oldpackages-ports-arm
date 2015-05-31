@@ -37,9 +37,15 @@ define Package/bitlbee/conffiles
 /opt/etc/bitlbee/bitlbee.conf
 endef
 
+DYNLINK=ld-linux.so.2
+ifeq ($(ARCH),arm)
+  DYNLINK:=ld-linux.so.3
+endif
+
 define Build/Configure
 	# it's not GNU autoconf stuff
 	(cd $(PKG_BUILD_DIR); \
+		$(SED) 's,ld-linux.so.0,$(DYNLINK),g' $(PKG_BUILD_DIR)/Makefile; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		CPPFLAGS="$(TARGET_CPPFLAGS)" \
@@ -73,7 +79,7 @@ define Build/Configure
 		$(PKG_BUILD_DIR)/Makefile.settings
 	$(SED) 's|-Wl,-rpath,/opt/lib||g'\
 		$(PKG_BUILD_DIR)/Makefile.settings
-	$(SED) 's|-Wl,--dynamic-linker=/opt/lib/ld-uClibc.so.0||g'\
+	$(SED) 's|-Wl,--dynamic-linker=/opt/lib/ld-linux.so.[0-9]||g'\
 		$(PKG_BUILD_DIR)/Makefile.settings
 	$(SED) 's|-Wl,-rpath-link=$(STAGING_DIR)/opt/lib||g'\
 		$(PKG_BUILD_DIR)/Makefile.settings
@@ -87,9 +93,11 @@ endef
 
 define Package/bitlbee/install
 	$(MAKE) -C $(PKG_BUILD_DIR) \
-		DESTDIR="$(1)" install-etc install-bin
+		DESTDIR="$(PKG_INSTALL_DIR)" install-etc install-bin
 	$(MAKE) -C $(PKG_BUILD_DIR)/doc/user-guide \
-		DESTDIR="$(1)" install
+		DESTDIR="$(PKG_INSTALL_DIR)" install
+	$(INSTALL_DIR) $(1)/opt
+	cp -r $(PKG_INSTALL_DIR)/opt/* $(1)/opt
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
 	$(INSTALL_BIN) ./files/S72bitlbee $(1)/opt/etc/init.d
 endef

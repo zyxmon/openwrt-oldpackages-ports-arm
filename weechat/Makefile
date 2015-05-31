@@ -15,6 +15,8 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://www.weechat.org/files/src
 PKG_MD5SUM:=3bb8d27301262bc434de9bcf7d77dce7
 
+#PKG_FIXUP:=autoreconf
+
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -25,12 +27,23 @@ define Package/weechat
   CATEGORY:=Network
   TITLE:=Lightweight IRC client
   URL:=http://www.weechat.org/
-  DEPENDS:=+libcurl +libgnutls +libgcrypt +zlib +libncursesw $(ICONV_DEPENDS) $(INTL_DEPENDS) +PACKAGE_libaspell:libaspell +perl +libpthread +python-base
+  DEPENDS:=+libcurl +libgnutls +libgcrypt +zlib +libncursesw +$(ICONV_DEPENDS) +$(INTL_DEPENDS) +libaspell +perl +libpthread +python-base
 endef
 
 define Package/weechat/description
  Weechat is fast, light & extensible IRC client.
 endef
+
+#ENABLE_PERL:BOOL=ON
+#PERL_EXECUTABLE:FILEPATH=/usr/bin/perl
+#PERL_INCLUDE_PATH:PATH=PERL_INCLUDE_PATH-NOTFOUND
+#PERL_LIBRARY:FILEPATH=PERL_LIBRARY-NOTFOUND
+#ENABLE_PYTHON:BOOL=ON
+#ENABLE_PYTHON3:BOOL=OFF
+#PYTHON_EXECUTABLE:FILEPATH=/media/qnap/qwork/openwrt_trunk/staging_dir/target-arm-openwrt-linux-gnueabi/host/bin/python2.7
+#PYTHON_INCLUDE_PATH:PATH=PYTHON_INCLUDE_PATH-NOTFOUND
+#PYTHON_LIBRARY:FILEPATH=/media/qnap/qwork/openwrt_trunk/staging_dir/target-arm-openwrt-linux-gnueabi/opt/lib/libpython2.7.a
+
 
 CMAKE_OPTIONS+= \
 	-DENABLE_PYTHON=ON \
@@ -48,10 +61,10 @@ CMAKE_OPTIONS+= \
 	-DENABLE_TCL=OFF
 
 TARGET_LDFLAGS += \
-	-L$(ICONV_PREFIX)/lib -ldl -lintl -liconv
+	-L$(ICONV_PREFIX)/lib -ldl -lintl -liconv\
+	-Wl,-rpath-link,$(STAGING_DIR)/opt/lib
 
-CONFIGURE_ARGS+= \
-	--with-libintl-prefix="$(INTL_PREFIX)"
+CONFIGURE_ARGS+= --with-libintl-prefix="$(STAGING_DIR)/opt/lib/libintl-full"
 
 define Package/weechat/install
 	$(INSTALL_DIR) $(1)/opt/bin

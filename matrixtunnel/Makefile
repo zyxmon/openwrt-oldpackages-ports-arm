@@ -37,6 +37,8 @@ define Package/matrixtunnel/description
 	based on matrixssl library.
 endef
 
+TARGET_CFLAGS += -DLINUX
+
 define Build/Configure
 	$(call Build/Configure/Default, \
 		--without-libiconv-prefix \

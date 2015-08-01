@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=hplip
-PKG_VERSION:=3.15.2
+PKG_VERSION:=3.15.7
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/hplip
-PKG_MD5SUM:=bbc55fc0d45e130a24ab042f60f9f888
+PKG_MD5SUM:=13be6f818c4dd27518320b2b230c907f
 
 PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
@@ -59,14 +59,14 @@ define Package/hplip/install
 	find $(PKG_INSTALL_DIR)/opt/share/hplip -name *.py | xargs $(SED) 's|/usr/bin/env python|/opt/bin/python|;s|/usr/bin/python|/opt/bin/python|'
 	find $(PKG_INSTALL_DIR)/opt -name *.py | xargs $(SED) 's|/usr/|/opt/|g'
 	$(SED) 's|/usr/|/opt/|g' $(PKG_INSTALL_DIR)/opt/lib/cups/filter/{pstotiff,hpps}
-	$(SED) 's|/bin/env python|/opt/bin/python|' $(PKG_INSTALL_DIR)/opt/lib/cups/filter/pstotiff
+	$(SED) 's|/bin/env python|/bin/python|' $(PKG_INSTALL_DIR)/opt/lib/cups/filter/pstotiff
 	find $(PKG_INSTALL_DIR)/opt/etc/udev/rules.d -name *.rules | xargs $(SED) 's|/usr/bin/|/opt/bin/|g'
 
 	$(INSTALL_DIR) $(1)/opt/bin
 	$(CP) $(PKG_INSTALL_DIR)/opt/bin/* $(1)/opt/bin
 
 	$(INSTALL_DIR) $(1)/opt/lib
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libhp{ip,mud}.so* $(1)/opt/lib/
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libhp{ip,ipp,mud}.so* $(1)/opt/lib/
 
 	$(INSTALL_DIR) $(1)/opt/lib/cups/{backend,filter}
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/lib/cups/backend/hp $(1)/opt/lib/cups/backend

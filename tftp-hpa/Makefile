@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tftp-hpa
-PKG_VERSION:=0.48
-PKG_RELEASE:=3
+PKG_VERSION:=5.2
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=@KERNEL/software/network/tftp
-PKG_MD5SUM:=73dd29dfa9062a174163f6a267e0b5f7
+PKG_SOURCE_URL:=@KERNEL/software/network/tftp/tftp-hpa/
+PKG_MD5SUM:=3de3038e7c2bf6fc5d496825893ac8e7
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -54,8 +54,6 @@ endef
 define Package/tftpd-hpa/install
 	$(INSTALL_DIR) $(1)/opt/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tftpd/tftpd $(1)/opt/sbin/tftpd-hpa
-#	$(INSTALL_DIR) $(1)/etc/init.d
-#	$(INSTALL_BIN) ./files/tftpd-hpa.init $(1)/etc/init.d/tftpd-hpa
 endef
 
 $(eval $(call BuildPackage,tftp-hpa))

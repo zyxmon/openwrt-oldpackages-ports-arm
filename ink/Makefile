@@ -7,11 +7,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ink
-PKG_VERSION:=0.5.1
+PKG_VERSION:=0.5.2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/ink
-PKG_MD5SUM:=df09c4a1a404dd37ffff80ce2491ab6d
+PKG_MD5SUM:=9dac3e63797d8b0e53fb57b31e648ae8
 
 PKG_INSTALL:=1
 
@@ -24,6 +24,9 @@ define Package/ink
   URL:=http://ink.sourceforge.net/
   DEPENDS:=+libinklevel
 endef
+
+TARGET_LDFLAGS += \
+	-lusb
 
 define Package/ink/install
 	$(INSTALL_DIR) $(1)/opt/bin

@@ -8,16 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=logrotate
-PKG_VERSION:=3.8.7
+PKG_VERSION:=3.9.1
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)_$(PKG_VERSION).orig.tar.gz
-PKG_SOURCE_URL:= \
-	http://ftp.debian.org/debian/pool/main/l/logrotate \
-	http://ftp.de.debian.org/debian/pool/main/l/logrotate \
-	http://ftp.fr.debian.org/debian/pool/main/l/logrotate \
-	http://ftp.us.debian.org/debian/pool/main/l/logrotate
-PKG_MD5SUM:=99e08503ef24c3e2e3ff74cc5f3be213
+
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:= https://fedorahosted.org/releases/l/o/logrotate
+PKG_MD5SUM:=4492b145b6d542e4a2f41e77fa199ab0
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -26,7 +23,7 @@ define Package/logrotate
   CATEGORY:=Utilities
   DEPENDS:=+libpopt
   TITLE:=rotates, compresses, and mails system logs
-  URL:=http://packages.debian.org/unstable/admin/logrotate
+  URL:=https://github.com/logrotate/logrotate
 endef
 
 define Package/logrotate/description
@@ -47,7 +44,6 @@ define Build/Compile
 	$(call Build/Compile/Default, \
 		RPM_OPT_FLAGS:="$(TARGET_CFLAGS) $(EXTRA_CFLAGS)" \
 		LDFLAGS="$(EXTRA_LDFLAGS)" \
-		DEFAULT_MAKE_COMMAND="/usr/sbin/sendmail" \
 		STATEFILE="/opt/var/lib/logrotate.status" \
 		logrotate \
 	)

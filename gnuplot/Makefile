@@ -32,7 +32,7 @@ CONFIGURE_VARS += \
 define Package/gnuplot
   SECTION:=utils
   CATEGORY:=Utilities
-  DEPENDS:=+libncurses $(CXX_DEPENDS) +zlib +libpng +libfreetype +libgd \
+  DEPENDS:=+libncurses $(CXX_DEPENDS) +zlib +libpng +libgd \
 	$(INTL_DEPENDS) $(ICONV_DEPENDS) +libpthread +libreadline
   TITLE:=A portable command-line driven graphing utility
   URL:=http://sourceforge.net/projects/gnuplot/

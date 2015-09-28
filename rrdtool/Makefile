@@ -66,6 +66,8 @@ $(call Package/rrdtool/Default)
   DEPENDS+= +python +librrd
 endef
 
+TARGET_CFLAGS += -I$(STAGING_DIR)/opt/include/freetype2
+
 CONFIGURE_ARGS += \
 	--enable-shared=yes \
 	--enable-static=yes \
